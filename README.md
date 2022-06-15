@@ -1,1 +1,1 @@
-# cube_3d
+# cub3d
