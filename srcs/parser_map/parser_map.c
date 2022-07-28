@@ -1,4 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_map.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bclarind <bclarind@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/21 15:49:53 by bclarind          #+#    #+#             */
+/*   Updated: 2022/07/21 15:49:54 by bclarind         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3D.h"
+
+int	allow_ch(char c)
+{
+	if (c == '1' || c == ' ')
+		return (1);
+	return (0);
+}
 
 void	check_filename(char *name)
 {
@@ -9,29 +28,21 @@ void	check_filename(char *name)
 		i++;
 	if (!(name[i] == '.' && name[i + 1] == 'c' && name[i + 2] == 'u' \
 		&& name[i + 3] == 'b' && name[i + 4] == '\0'))
-		ft_exit(NULL, 0);
+		ft_exit(NULL, 1);
 }
 
 void	open_read_map(char *name, t_data *data)
 {
-	int		i;
 	int		fd;
 
 	fd = open(name, O_RDONLY);
-	if (gnl(fd, data))
-		ft_exit(data, 12);
-	i = 0;
-	while (data->map[i])
-		printf("%s\n", data->map[i++]);
+	gnl(fd, data);
 	close(fd);
 }
 
-t_data	parser_map(char *name)
+void	parser_map(t_data *data, char *name)
 {
-	t_data	data;
-
-	data.map = NULL;
+	data->map = NULL;
 	check_filename(name);
-	open_read_map(name, &data);
-	return (data);
+	open_read_map(name, data);
 }

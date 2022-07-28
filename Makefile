@@ -5,7 +5,7 @@ CFLAGS = -g -Wall -Wextra -Werror
 MLXFL =  -L mlx -l mlx -framework OpenGL -framework AppKit
 
 OBJDIR = ./objs
-VPATH = ./srcs ./srcs/parser_map ./srcs/utils
+VPATH = ./srcs ./srcs/parser_map ./srcs/utils ./srcs/init_game ./srcs/free_utils
 LIBFT_DIR = libft/
 HEADDIR = ./includes
 
@@ -17,17 +17,17 @@ SRC = $(wildcard $(addsuffix /*.c,$(VPATH)))
 
 all:    $(LIBFT) $(NAME)
 
-$(OBJDIR)/%.o :	%.c $^ $(HEADDIR)/$(HEADER)
+$(OBJDIR)/%.o :	%.c $^ $(HEADDIR)/$(HEADER) 
 	@$(CC) $(CFLAGS) -Imlx -c $< -o $@
 
-$(NAME):	$(OBJDIR) $(OBJ)
-	@$(CC) $(CFLAGS) $(MLXFL) -o $(NAME) $(LIBFT_DIR)libft.a -I$(HEADER) $(OBJ) 
+$(NAME):	Makefile $(OBJDIR) $(OBJ) 
+	@$(CC) $(CFLAGS) $(MLXFL) -o $(NAME) $(LIBFT_DIR)libft.a -I$(HEADER) -Imlx/mlx.h $(OBJ) 
 	@echo "$(NAME) compile"
 
 $(OBJDIR):
 	@if [ ! -d $(OBJDIR) ] ; then mkdir $(OBJDIR); fi
 
-$(LIBFT):
+$(LIBFT): $(LIBFT_DIR)/includes/libft.h
 	@make -C $(LIBFT_DIR)
 
 clean:
